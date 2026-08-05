@@ -43,35 +43,6 @@ services:
       SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "false"
       EUREKA_CLIENT_ENABLED: "false"
 
-  ewm-service:
-    restart: on-failure
-    build: ./core/main-service
-    image: ewm-service-image
-    container_name: ewm-service
-    depends_on:
-      ewm-db:
-        condition: service_healthy
-      stats-server:
-        condition: service_started
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_DATASOURCE_URL: jdbc:postgresql://ewm-db:5432/ewm-server
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-
-      SPRING_SQL_INIT_MODE: always
-      SPRING_JPA_HIBERNATE_DDL_AUTO: none
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
-
-      STATS_SERVER_URL: http://stats-server:9090
-
-      SPRING_CLOUD_CONFIG_ENABLED: "false"
-      SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "false"
-      EUREKA_CLIENT_ENABLED: "false"
-
   user-db:
     image: postgres:15.1-alpine
     container_name: EWM-user-db
