@@ -11,6 +11,8 @@
         "type": "text/javascript",
         "exec": [
           "const now = new Date();",
+          "const uniqueSuffix = pm.collectionVariables.get('uniqueSuffix') || Date.now().toString();",
+          "pm.collectionVariables.set('uniqueSuffix', uniqueSuffix);",
           "const publishedDate = new Date(now.getTime() + 3 * 60 * 60 * 1000);",
           "const rejectedDate = new Date(now.getTime() + 4 * 60 * 60 * 1000);",
           "const updateDate = new Date(now.getTime() + 5 * 60 * 60 * 1000);",
@@ -52,16 +54,24 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Location Admin\",\n  \"email\": \"location-admin@example.com\"\n}"
+              "raw": "{\n  \"name\": \"Location Admin\",\n  \"email\": \"location-admin-{{uniqueSuffix}}@example.com\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/admin/users",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "users"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
             }
           }
         },
@@ -82,7 +92,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -90,8 +103,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/admin/locations",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations"
+              ]
             }
           }
         },
@@ -112,11 +130,22 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/admin/locations?from=0&size=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations"
+              ],
               "query": [
-                { "key": "from", "value": "0" },
-                { "key": "size", "value": "10" }
+                {
+                  "key": "from",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
               ]
             }
           }
@@ -138,8 +167,14 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/admin/locations/{{locationId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations", "{{locationId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations",
+                "{{locationId}}"
+              ]
             }
           }
         },
@@ -159,7 +194,10 @@
           "request": {
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -167,8 +205,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/admin/locations/{{locationId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations", "{{locationId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations",
+                "{{locationId}}"
+              ]
             }
           }
         },
@@ -189,7 +233,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -197,8 +244,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/admin/locations",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations"
+              ]
             }
           }
         },
@@ -219,8 +271,14 @@
             "method": "DELETE",
             "url": {
               "raw": "{{baseUrl}}/admin/locations/{{tempLocationId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations", "{{tempLocationId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations",
+                "{{tempLocationId}}"
+              ]
             }
           }
         },
@@ -241,8 +299,14 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/admin/locations/{{tempLocationId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "locations", "{{tempLocationId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "locations",
+                "{{tempLocationId}}"
+              ]
             }
           }
         }
@@ -268,16 +332,24 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Moderation feature category\"\n}"
+              "raw": "{\n  \"name\": \"Moderation feature category {{uniqueSuffix}}\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/admin/categories",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "categories"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "categories"
+              ]
             }
           }
         },
@@ -298,16 +370,24 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Event Owner\",\n  \"email\": \"event-owner@example.com\"\n}"
+              "raw": "{\n  \"name\": \"Event Owner\",\n  \"email\": \"event-owner-{{uniqueSuffix}}@example.com\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/admin/users",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "users"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
             }
           }
         },
@@ -328,7 +408,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -336,8 +419,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/users/{{eventOwnerId}}/events",
-              "host": ["{{baseUrl}}"],
-              "path": ["users", "{{eventOwnerId}}", "events"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{eventOwnerId}}",
+                "events"
+              ]
             }
           }
         },
@@ -358,11 +447,23 @@
             "method": "GET",
             "url": {
               "raw": "{{baseUrl}}/admin/events/pending?from=0&size=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "events", "pending"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "events",
+                "pending"
+              ],
               "query": [
-                { "key": "from", "value": "0" },
-                { "key": "size", "value": "10" }
+                {
+                  "key": "from",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
               ]
             }
           }
@@ -384,8 +485,15 @@
             "method": "PATCH",
             "url": {
               "raw": "{{baseUrl}}/admin/events/{{eventId}}/publish",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "events", "{{eventId}}", "publish"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "events",
+                "{{eventId}}",
+                "publish"
+              ]
             }
           }
         },
@@ -406,7 +514,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -414,8 +525,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/users/{{eventOwnerId}}/events",
-              "host": ["{{baseUrl}}"],
-              "path": ["users", "{{eventOwnerId}}", "events"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{eventOwnerId}}",
+                "events"
+              ]
             }
           }
         },
@@ -436,8 +553,15 @@
             "method": "PATCH",
             "url": {
               "raw": "{{baseUrl}}/admin/events/{{rejectedEventId}}/reject",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "events", "{{rejectedEventId}}", "reject"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "events",
+                "{{rejectedEventId}}",
+                "reject"
+              ]
             }
           }
         },
@@ -458,8 +582,15 @@
             "method": "PATCH",
             "url": {
               "raw": "{{baseUrl}}/admin/events/{{eventId}}/reject",
-              "host": ["{{baseUrl}}"],
-              "path": ["admin", "events", "{{eventId}}", "reject"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "events",
+                "{{eventId}}",
+                "reject"
+              ]
             }
           }
         }

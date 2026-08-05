@@ -43,23 +43,6 @@ services:
       SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "false"
       EUREKA_CLIENT_ENABLED: "false"
 
-  ewm-db:
-    image: postgres:15.1-alpine
-    container_name: EWM-server-db
-    ports:
-      - "6542:5432"
-    environment:
-      POSTGRES_DB: ewm-server
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    volumes:
-      - ewm-db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   ewm-service:
     restart: on-failure
     build: ./core/main-service
@@ -73,8 +56,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SERVER_PORT: 8080
-
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_DATASOURCE_URL: jdbc:postgresql://ewm-db:5432/ewm-server
       SPRING_DATASOURCE_USERNAME: postgres
@@ -91,6 +72,77 @@ services:
       SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "false"
       EUREKA_CLIENT_ENABLED: "false"
 
+  user-db:
+    image: postgres:15.1-alpine
+    container_name: EWM-user-db
+    ports:
+      - "6543:5432"
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  event-db:
+    image: postgres:15.1-alpine
+    container_name: EWM-event-db
+    ports:
+      - "6544:5432"
+    environment:
+      POSTGRES_DB: events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - event-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  request-db:
+    image: postgres:15.1-alpine
+    container_name: EWM-request-db
+    ports:
+      - "6545:5432"
+    environment:
+      POSTGRES_DB: requests
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - request-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  location-db:
+    image: postgres:15.1-alpine
+    container_name: EWM-location-db
+    ports:
+      - "6546:5432"
+    environment:
+      POSTGRES_DB: locations
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - location-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   stats-db-data:
-  ewm-db-data:
+  user-db-data:
+  event-db-data:
+  request-db-data:
+  location-db-data:
