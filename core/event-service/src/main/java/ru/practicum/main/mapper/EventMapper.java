@@ -29,12 +29,16 @@ public class EventMapper {
     private final LocationMapper locationMapper;
     private final UserClient userClient;
 
+    private final DateTimeFormatter dateFormatter =
+            DateTimeFormatter.ofPattern(ConfigUtil.DATE);
+
     public EventFullDto toEventFullDto(Event event) {
         if (event == null) {
             return null;
         }
 
         UserDto initiator = getUser(event.getInitiatorId());
+
         return toEventFullDto(event, initiator);
     }
 
@@ -46,43 +50,32 @@ public class EventMapper {
             return null;
         }
 
-        EventFullDto dto = new EventFullDto();
-
-        dto.setId(event.getId());
-        dto.setTitle(event.getTitle());
-        dto.setAnnotation(event.getAnnotation());
-        dto.setDescription(event.getDescription());
-        dto.setEventDate(event.getEventDate());
-        dto.setPaid(event.getPaid());
-        dto.setParticipantLimit((long) event.getParticipantLimit());
-        dto.setRequestModeration(event.getRequestModeration());
-        dto.setState(event.getState());
-        dto.setPublishedOn(event.getPublishedOn());
-        dto.setInitiator(initiator);
-
-        if (event.getCreatedOn() != null) {
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern(ConfigUtil.DATE);
-
-            dto.setCreatedOn(event.getCreatedOn().format(formatter));
-        }
-
-        if (event.getCategory() != null) {
-            dto.setCategory(
-                    categoryMapper.toCategoryDto(event.getCategory())
-            );
-        }
-
-        if (event.getLocation() != null) {
-            dto.setLocation(
-                    locationMapper.toLocationDto(event.getLocation())
-            );
-        }
-
-        dto.setViews(0L);
-        dto.setConfirmedRequests(0L);
-
-        return dto;
+        return EventFullDto.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .annotation(event.getAnnotation())
+                .description(event.getDescription())
+                .eventDate(event.getEventDate())
+                .paid(event.getPaid())
+                .participantLimit((long) event.getParticipantLimit())
+                .requestModeration(event.getRequestModeration())
+                .state(event.getState())
+                .publishedOn(event.getPublishedOn())
+                .createdOn(formatCreatedOn(event))
+                .initiator(initiator)
+                .category(
+                        event.getCategory() == null
+                                ? null
+                                : categoryMapper.toCategoryDto(event.getCategory())
+                )
+                .location(
+                        event.getLocation() == null
+                                ? null
+                                : locationMapper.toLocationDto(event.getLocation())
+                )
+                .views(0L)
+                .confirmedRequests(0L)
+                .build();
     }
 
     public Event toEventModel(NewEventDto dto) {
@@ -124,6 +117,7 @@ public class EventMapper {
         }
 
         UserDto initiator = getUser(event.getInitiatorId());
+
         return toEventShortDto(event, initiator);
     }
 
@@ -131,25 +125,25 @@ public class EventMapper {
             Event event,
             UserDto initiator
     ) {
-        EventShortDto dto = new EventShortDto();
-
-        dto.setId(event.getId());
-        dto.setTitle(event.getTitle());
-        dto.setAnnotation(event.getAnnotation());
-        dto.setEventDate(event.getEventDate());
-        dto.setPaid(event.getPaid());
-        dto.setInitiator(initiator);
-
-        if (event.getCategory() != null) {
-            dto.setCategory(
-                    categoryMapper.toCategoryDto(event.getCategory())
-            );
+        if (event == null) {
+            return null;
         }
 
-        dto.setViews(0L);
-        dto.setConfirmedRequests(0L);
-
-        return dto;
+        return EventShortDto.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .annotation(event.getAnnotation())
+                .eventDate(event.getEventDate())
+                .paid(event.getPaid())
+                .initiator(initiator)
+                .category(
+                        event.getCategory() == null
+                                ? null
+                                : categoryMapper.toCategoryDto(event.getCategory())
+                )
+                .views(0L)
+                .confirmedRequests(0L)
+                .build();
     }
 
     public List<EventShortDto> toEventShortDtoList(
@@ -184,6 +178,14 @@ public class EventMapper {
                         users.get(event.getInitiatorId())
                 ))
                 .collect(Collectors.toList());
+    }
+
+    private String formatCreatedOn(Event event) {
+        if (event.getCreatedOn() == null) {
+            return null;
+        }
+
+        return event.getCreatedOn().format(dateFormatter);
     }
 
     private UserDto getUser(Long userId) {

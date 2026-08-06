@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Builder;
 import ru.practicum.interaction.dto.user.UserDto;
 import ru.practicum.main.config.ConfigUtil;
 import ru.practicum.main.dto.category.CategoryDto;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class EventFullDto {
 
     private String annotation;
